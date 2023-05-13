@@ -1,6 +1,6 @@
 const connectionUrl = "ws://localhost:5000/ws"
 
-export const encodeString = async (input: string, onReceive: (value: string) => void): Promise<void> => {
+export const encodeString = async (input: string, onReceive: (value: string) => void, onClose: () => void): Promise<void> => {
   const socket = new WebSocket(connectionUrl);
   socket.onopen = function (event) {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
@@ -10,9 +10,7 @@ export const encodeString = async (input: string, onReceive: (value: string) => 
     socket.send(data);
   };
   socket.onclose = function (event) {
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-        alert("socket not connected");
-    }
+    onClose()
     socket.close(1000, "Closing from client");
   };
   socket.onerror = function (event) {

@@ -4,7 +4,12 @@ import { encodeString } from './services/encode';
 import styles from './App.module.scss'
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [encodedString, setEncodedString] = useState<string>('');
+
+  const onClose = () => {
+    setLoading(false)
+  }
 
   const onReceiveText = (value: string) => {
     setEncodedString(prev => prev += value);
@@ -12,8 +17,10 @@ function App() {
 
   const onConvert = (event: FormEvent) => {
     event.preventDefault();
+    setEncodedString('');
+    setLoading(true)
     const inputElement = (event.target as HTMLFormElement)[0] as HTMLInputElement;
-    encodeString(inputElement.value, onReceiveText);
+    encodeString(inputElement.value, onReceiveText, onClose);
   }
 
   return (
@@ -26,6 +33,7 @@ function App() {
             aria-label="Encoded Text"
             readOnly
             value={encodedString}
+            disabled={true}
           />
         </InputGroup>
         <Form onSubmit={onConvert}>
@@ -34,8 +42,9 @@ function App() {
               placeholder="Please enter any text"
               aria-label="Text"
               aria-describedby="basic-addon1"
+              disabled={loading}
             />
-            <Button type="submit">
+            <Button type="submit" disabled={loading}>
               Convert
             </Button>
           </InputGroup>
