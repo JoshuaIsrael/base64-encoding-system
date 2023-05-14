@@ -1,21 +1,24 @@
-const connectionUrl = "ws://localhost:5000/ws"
+import { BASE_WEBSOCKET_CONNECTION } from ".";
+import { showToast } from "src/components/Toast";
 
 export const encodeString = async (input: string, onReceive: (value: string) => void, onClose: () => void): Promise<void> => {
-  const socket = new WebSocket(connectionUrl);
-  socket.onopen = function (event) {
+  const socket = new WebSocket(BASE_WEBSOCKET_CONNECTION + 'encode');
+  socket.onopen = function () {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
-        alert("socket not connected");
+      showToast('Failed to connect to the server.', 'danger')
     }
-    var data = input;
-    socket.send(data);
+    socket.send(input);
   };
-  socket.onclose = function (event) {
+  socket.onclose = function (this: WebSocket, event: CloseEvent) {
     onClose()
+    if(event.wasClean){
+      showToast('Encoding was successful.', 'success')
+    }
     socket.close(1000, "Closing from client");
   };
-  socket.onerror = function (event) {
-    console.log(event)
-  };;
+  socket.onerror = function () {
+    showToast('An error has occurred. Please try again.', 'danger')
+  };
   socket.onmessage = function (event) {
     onReceive(event.data);
   };

@@ -1,0 +1,1 @@
+export const BASE_WEBSOCKET_CONNECTION = 'ws://localhost:5000/'
