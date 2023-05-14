@@ -1,0 +1,30 @@
+.Toast {
+  animation-duration: 500ms;
+
+  &-enter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  }
+
+  &-enter-done {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
