@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react'
-import { Button, Form, InputGroup } from 'react-bootstrap'
+import { Form, InputGroup } from 'react-bootstrap'
 import { encodeString } from './services/encode';
+import { Button } from './components';
 import styles from './App.module.scss'
 
 function App() {
@@ -25,27 +26,29 @@ function App() {
 
   return (
     <div className={styles.App}>
-      <main>
-        <h1>Base64 Encoder</h1>
-        <InputGroup className="mb-3">
+      <main className="d-flex flex-column w-50 h-75 p-4 shadow-sm p-3 mb-5 bg-white rounded">
+        <h1 className="h3">Base64 Encoder</h1>
+        <InputGroup className="h-100 mb-3">
           <Form.Control
-            as="textarea"
-            aria-label="Encoded Text"
             readOnly
+            className="p-3"
+            as="textarea"
             value={encodedString}
+            style={{ resize: 'none' }}
             disabled={true}
+            aria-label="Encoded Text"
           />
         </InputGroup>
-        <Form onSubmit={onConvert}>
+        <Form className="d-flex" onSubmit={onConvert}>
           <InputGroup>
             <Form.Control
               placeholder="Please enter any text"
               aria-label="Text"
-              aria-describedby="basic-addon1"
               disabled={loading}
+              required
             />
-            <Button type="submit" disabled={loading}>
-              Convert
+            <Button loading={loading}>
+              { loading ? 'Loading...' : 'Convert' }
             </Button>
           </InputGroup>
         </Form>
